@@ -1,2 +1,3 @@
 supabase==0.7.1
 pyramid==2.0
+pyramid-jinja2==2.10
