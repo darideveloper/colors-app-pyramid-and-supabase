@@ -15,15 +15,15 @@ project_url = credentials.get ("supabase_project_url")
 supabase: sb_client = sb_create_client(project_url, secret)
 
 def home(request):
-    context = {}
+    context = {"current_page": "home"}
     return context
 
 def signup(request):
-    context = {}
+    context = {"current_page": "signup"}
     return context
 
 def login(request):
-    context = {}
+    context = {"current_page": "login"}
     return context
 
 # Setup and start app
@@ -48,4 +48,7 @@ if __name__ == '__main__':
         app = config.make_wsgi_app()
         
     # Run
-    make_server(host='0.0.0.0', port=6543, app=app).serve_forever()
+    host = "0.0.0.0"
+    port = 6543
+    print (f"Running app, open at: http://localhost:{port}/")
+    make_server(host=host, port=port, app=app).serve_forever()
