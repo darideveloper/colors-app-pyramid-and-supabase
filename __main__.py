@@ -18,6 +18,7 @@ project_url = credentials.get ("supabase_project_url")
 supabase: sb_client = sb_create_client(project_url, secret)
 
 def home(request):
+    # Home page with users data
     context = {
         "current_page": "Home",
         "error": "",
@@ -26,6 +27,8 @@ def home(request):
     return context
 
 def signup(request):
+    # Sign up page with email, google and discord
+    
     # Get ikmages path
     context = {
         "current_page": "Signup",
@@ -58,8 +61,20 @@ def signup(request):
     return context
 
 def login(request):
+    # Login page with email, google and discord
+    
     context = {
         "current_page": "Login",
+        "error": "",
+        "message": "",
+    }
+    return context
+
+def successful(request):
+    # Confiroation page after signup with email
+    
+    context = {
+        "current_page": "email-done",
         "error": "",
         "message": "",
     }
@@ -78,11 +93,13 @@ if __name__ == '__main__':
         config.add_route('home', '/')
         config.add_route('signup', '/signup')
         config.add_route('login', '/login')
+        config.add_route('successful', '/successful')
         
         # views
         config.add_view(home, route_name='home', renderer="home.html")
         config.add_view(signup, route_name='signup', renderer="signup.html")
         config.add_view(login, route_name='login', renderer="login.html")
+        config.add_view(successful, route_name='successful', renderer="successful.html")
         
         # Setup wsgi
         app = config.make_wsgi_app()
