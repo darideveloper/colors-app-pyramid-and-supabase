@@ -7,6 +7,7 @@ from pyramid.config import Configurator
 from pyramid.response import Response
 from supabase import create_client as sb_create_client, Client as sb_client
 from config import Config as Credentials
+from pyramid.httpexceptions import HTTPFound
 
 # Get credentials from config
 credentials = Credentials()
@@ -71,7 +72,7 @@ def login(request):
     return context
 
 def successful(request):
-    # Confiroation page after signup with email
+    # Confiroation page after signups
     
     context = {
         "current_page": "email-done",
@@ -79,6 +80,15 @@ def successful(request):
         "message": "",
     }
     return context
+
+def signup_google(request):
+    # Redirect to page to wign up with google
+    
+    # Generate sign up page
+    signin_link = supabase.auth.sign_in (provider="google")
+    
+    # Redirect
+    return HTTPFound(location=signin_link)
 
 # Setup and start app
 if __name__ == '__main__':
@@ -94,12 +104,14 @@ if __name__ == '__main__':
         config.add_route('signup', '/signup')
         config.add_route('login', '/login')
         config.add_route('successful', '/successful')
+        config.add_route('signup_google', '/signup/google')
         
         # views
         config.add_view(home, route_name='home', renderer="home.html")
         config.add_view(signup, route_name='signup', renderer="signup.html")
         config.add_view(login, route_name='login', renderer="login.html")
         config.add_view(successful, route_name='successful', renderer="successful.html")
+        config.add_view(signup_google, route_name='signup_google')
         
         # Setup wsgi
         app = config.make_wsgi_app()
