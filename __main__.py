@@ -1,4 +1,5 @@
 import os
+import mimetypes
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.response import Response
@@ -15,21 +16,23 @@ project_url = credentials.get ("supabase_project_url")
 supabase: sb_client = sb_create_client(project_url, secret)
 
 def home(request):
-    context = {"current_page": "home"}
+    context = {"current_page": "Home"}
     return context
 
 def signup(request):
-    context = {"current_page": "signup"}
+    # Get ikmages path
+    context = {"current_page": "Signup"}
     return context
 
 def login(request):
-    context = {"current_page": "login"}
+    context = {"current_page": "Login"}
     return context
 
 # Setup and start app
 if __name__ == '__main__':
     with Configurator() as config:
         
+        # Templates and static seetings
         config.include("pyramid_jinja2")
         config.add_jinja2_renderer(".html")
         config.add_jinja2_search_path("./templates", name=".html")

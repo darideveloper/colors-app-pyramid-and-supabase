@@ -3,5 +3,28 @@
 {% block title %}signup{% endblock %}
 
 {% block content %}
-<h1>signup</h1>
+<section class="w-100 d-flex align-items-center justify-content-space row">
+    <form class="col-12 col-lg-6" action="/signup">
+        <h1>Sign Up</h1>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="user" class="form-label">User name</label>
+            <input type="text" class="form-control" id="user" name="user">
+        </div>
+        <div class="mb-3">
+            <label for="password1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password1">
+        </div>
+        <div class="mb-3">
+            <label for="password2" class="form-label">Password (again)</label>
+            <input type="password" class="form-control" id="password2">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+    <img class="col-12 col-lg-6" src="https://i.imgur.com/v2zlP85.png" alt="sign up illustration">
+</section>
 {% endblock %}
