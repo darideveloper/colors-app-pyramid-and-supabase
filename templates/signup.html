@@ -4,7 +4,7 @@
 
 {% block content %}
 <section class="w-100 d-flex align-items-center justify-content-space row">
-    <form class="col-12 col-lg-6" action="/signup">
+    <form class="col-12 col-lg-6" action="/signup" method="post">
         <h1>Sign Up</h1>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
@@ -16,15 +16,48 @@
         </div>
         <div class="mb-3">
             <label for="password1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password1">
+            <input type="password" class="form-control" id="password1" name="password" onchange="update_password()">
         </div>
         <div class="mb-3">
             <label for="password2" class="form-label">Password (again)</label>
-            <input type="password" class="form-control" id="password2">
+            <input type="password" class="form-control" id="password2" onchange="update_password()">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <p class='text-danger' id="pass-error"></p>
+        <button type="submit" class="btn btn-primary" disabled>Sign up now</button>
     </form>
     
     <img class="col-12 col-lg-6" src="https://i.imgur.com/v2zlP85.png" alt="sign up illustration">
 </section>
+{% endblock %}
+
+{% block js %}
+<script>
+    function update_password () {
+            
+        // Get elements
+        const pass1_elem = document.querySelector ("#password1")
+        const pass2_elem = document.querySelector ("#password2")
+        const pass_error = document.querySelector ("#pass-error")
+        const submit = document.querySelector ("button[type='submit']")
+
+        // Get passwords
+        const pass1 = pass1_elem.value
+        const pass2 = pass2_elem.value
+    
+        // Validate passwords
+        if (pass1 && pass2) {
+            if (pass1 == pass2) {
+                pass_error.innerHTML = ""
+    
+                // Activate submit button
+                submit.disabled = false
+            } else {
+                pass_error.innerHTML = "The passwords don't match"
+
+                // Disable submit button
+                submit.disabled = true
+            }
+        }
+    }
+</script>
 {% endblock %}

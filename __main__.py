@@ -22,6 +22,13 @@ def home(request):
 def signup(request):
     # Get ikmages path
     context = {"current_page": "Signup"}
+    
+    # Get form data in post
+    if request.method == 'POST':
+        user = request.params["user"]
+        email = request.params["email"]
+        password = request.params["password"]
+    
     return context
 
 def login(request):
