@@ -39,6 +39,20 @@
     </header>
 
     <main class="container my-5">
+        <!-- Alerts -->
+        {% if error != "" %}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+        {% endif %}
+
+        {% if message != "" %}
+            <div class="alert alert-primary" role="alert">
+                {{message}}
+            </div>
+        {% endif %}
+
+        <!-- Page content -->
         {% block content %}{% endblock %}
     </main>
 
@@ -47,6 +61,8 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous">
     </script>
+
+    <!-- Alert -->
 
     {% block js %} {% endblock %}
 </body>
