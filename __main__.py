@@ -90,6 +90,15 @@ def signup_google(request):
     # Redirect
     return HTTPFound(location=signin_link)
 
+def signup_github(request):
+    # Redirect to page to wign up with google
+    
+    # Generate sign up page
+    signin_link = supabase.auth.sign_in (provider="github")
+    
+    # Redirect
+    return HTTPFound(location=signin_link)
+
 # Setup and start app
 if __name__ == '__main__':
     with Configurator() as config:
@@ -105,6 +114,7 @@ if __name__ == '__main__':
         config.add_route('login', '/login')
         config.add_route('successful', '/successful')
         config.add_route('signup_google', '/signup/google')
+        config.add_route('signup_github', '/signup/github')
         
         # views
         config.add_view(home, route_name='home', renderer="home.html")
@@ -112,6 +122,7 @@ if __name__ == '__main__':
         config.add_view(login, route_name='login', renderer="login.html")
         config.add_view(successful, route_name='successful', renderer="successful.html")
         config.add_view(signup_google, route_name='signup_google')
+        config.add_view(signup_github, route_name='signup_github')
         
         # Setup wsgi
         app = config.make_wsgi_app()
