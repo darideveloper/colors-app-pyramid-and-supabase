@@ -4,6 +4,7 @@ from supabase import create_client as sb_create_client, Client as sb_client
 from config import Config as Credentials
 from pyramid.httpexceptions import HTTPFound
 from pyramid.session import SignedCookieSessionFactory
+from tools import get_session_user
 
 # Get credentials from config
 credentials = Credentials()
@@ -18,23 +19,30 @@ supabase: sb_client = sb_create_client(project_url, secret)
 session_factory = SignedCookieSessionFactory('my secret key 123')
 
 
-def home(request):
+def home(request):      
     # Home page with users data
+    
+    user = get_session_user(request)
+    
     context = {
         "current_page": "Home",
         "error": "",
         "message": "",
+        "user": user,
     }
     return context
 
 def signup(request):
     # Sign up page with email, google and discord
     
+    user = get_session_user(request)
+    
     # Get ikmages path
     context = {
         "current_page": "Signup",
         "error": "",
         "message": "",
+        "user": user,
     }
     
     # Get form data in post
@@ -61,20 +69,26 @@ def signup(request):
 def login(request):
     # Login page with email, google and discord
     
+    user = get_session_user(request)
+     
     context = {
         "current_page": "Login",
         "error": "",
         "message": "",
+        "user": user,
     }
     return context
 
 def successful(request):
     # Confiroation page after signups
     
+    user = get_session_user(request)
+    
     context = {
         "current_page": "email-done",
         "error": "",
         "message": "",
+        "user": user,
     }
     return context
 

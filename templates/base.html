@@ -26,12 +26,21 @@
                         <li class="nav-item">
                             <a class="nav-link {% if current_page=='Home' %}active{% endif %}" aria-current="page" href="/">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if current_page=='Login' %}active{% endif %}" href="/login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if current_page=='Signup' %}active{% endif %}" href="/signup">Sign up</a>
-                        </li>
+                        {% if user != "" %}
+                            <li class="nav-item d-flex align-items-center">
+                                <a class="nav-link {% if current_page=='Login' %}active{% endif %}" href="/logout">Log out</a>
+                            </li>
+                            <li class="nav-item d-flex align-items-center">
+                                <a class="nav-link {% if current_page=='Login' %}active{% endif %}" href="/profile">Profile</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if current_page=='Login' %}active{% endif %}" href="/login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if current_page=='Signup' %}active{% endif %}" href="/signup">Sign up</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -63,7 +72,6 @@
     </script>
 
     <!-- Alert -->
-
     {% block js %} {% endblock %}
 </body>
 
