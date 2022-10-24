@@ -1,13 +1,9 @@
-import os
-import mimetypes
-from unicodedata import name
 from wsgiref.simple_server import make_server
-from psutil import users
 from pyramid.config import Configurator
-from pyramid.response import Response
 from supabase import create_client as sb_create_client, Client as sb_client
 from config import Config as Credentials
 from pyramid.httpexceptions import HTTPFound
+from pyramid.session import SignedCookieSessionFactory
 
 # Get credentials from config
 credentials = Credentials()
@@ -17,6 +13,10 @@ project_url = credentials.get ("supabase_project_url")
 
 # Conncect to Supabase
 supabase: sb_client = sb_create_client(project_url, secret)
+
+# Setup pyramit sessions
+session_factory = SignedCookieSessionFactory('my secret key 123')
+
 
 def home(request):
     # Home page with users data
@@ -56,9 +56,6 @@ def signup(request):
             user = supabase.auth.sign_up (email=email, password=password)
             context["message"] = f"Done. Check your inbox to verity your email"
             
-            
-        
-    
     return context
 
 def login(request):
@@ -103,10 +100,11 @@ def signup_github(request):
 if __name__ == '__main__':
     with Configurator() as config:
         
-        # Templates and static seetings
+        # App settings
         config.include("pyramid_jinja2")
         config.add_jinja2_renderer(".html")
-        config.add_jinja2_search_path("./templates", name=".html")
+        config.add_jinja2_search_path("./templates", name=".html")        
+        config.set_session_factory(session_factory)
         
         # routes
         config.add_route('home', '/')
