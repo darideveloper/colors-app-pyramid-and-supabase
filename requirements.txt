@@ -1,3 +1,2 @@
 supabase==0.7.1
 pyramid==2.0
-
