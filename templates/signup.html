@@ -10,7 +10,8 @@
         </div>
         <div class="mb-3">
             <label for="password1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password1" name="password" onkeyup="update_password()" minlength="8">
+            <input type="password" class="form-control" id="password1" name="password" onkeyup="update_password()"
+                minlength="8">
         </div>
         <div class="mb-3">
             <label for="password2" class="form-label">Password (again)</label>
@@ -18,31 +19,41 @@
         </div>
         <p class='text-danger' id="pass-error"></p>
         <button type="submit" class="btn btn-primary" disabled>Register now</button>
+
+        <div class="sign-up-buttons d-flex align-items-center justify-content-start mt-4">
+            <p class="fs-6 m-0">Sign up with:</p>
+            <a href="/signup-google">
+                <img src="https://cdn.svgporn.com/logos/google-icon.svg" alt="google logo" style="width: 30px;" class="m-2">
+            </a>
+            <a href="/signup-discord">
+                <img src="https://cdn.svgporn.com/logos/discord-icon.svg" alt="discord logo" style="width: 30px;" class="m-2">
+            </a>
+        </div>
     </form>
-    
+
     <img class="col-12 col-lg-6" src="https://i.imgur.com/v2zlP85.png" alt="sign up illustration">
 </section>
 {% endblock %}
 
 {% block js %}
 <script>
-    function update_password () {
-            
+    function update_password() {
+
         // Get elements
-        const pass1_elem = document.querySelector ("#password1")
-        const pass2_elem = document.querySelector ("#password2")
-        const pass_error = document.querySelector ("#pass-error")
-        const submit = document.querySelector ("button[type='submit']")
+        const pass1_elem = document.querySelector("#password1")
+        const pass2_elem = document.querySelector("#password2")
+        const pass_error = document.querySelector("#pass-error")
+        const submit = document.querySelector("button[type='submit']")
 
         // Get passwords
         const pass1 = pass1_elem.value
         const pass2 = pass2_elem.value
-    
+
         // Validate passwords
         if (pass1 && pass2) {
             if (pass1 == pass2) {
                 pass_error.innerHTML = ""
-    
+
                 // Activate submit button
                 submit.disabled = false
             } else {
