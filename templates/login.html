@@ -1,5 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>login</h1>
+<section class="w-100 d-flex align-items-center justify-content-space row">
+    <img class="col-12 col-lg-6" src="https://i.imgur.com/LHpvl5M.png" alt="sign up illustration">
+    <form class="col-12 col-lg-6" action="/signup" method="post">
+        <h1>Login</h1>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" minlength="8">
+            <p>Did you forget your password?, click <a href="/reset-password">here</a></p>
+        </div>
+        <p class='text-danger' id="pass-error"></p>
+        <button type="submit" class="btn btn-primary" disabled>Login now</button>
+
+        <div class="sign-up-buttons d-flex align-items-center justify-content-start mt-4">
+            <p class="fs-6 m-0">Login with:</p>
+            <a href="/signup/google">
+                <img src="https://cdn.svgporn.com/logos/google-icon.svg" alt="google logo" style="width: 30px;" class="m-2">
+            </a>
+            <a href="/signup/github">
+                <img src="https://cdn.svgporn.com/logos/github-icon.svg" alt="github logo" style="width: 30px;" class="m-2">
+            </a>
+        </div>
+    </form>
+</section>
 {% endblock %}
