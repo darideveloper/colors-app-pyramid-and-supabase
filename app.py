@@ -1,10 +1,11 @@
+import requests
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from supabase import create_client as sb_create_client, Client as sb_client
 from config import Config as Credentials
 from pyramid.httpexceptions import HTTPFound
 from pyramid.session import SignedCookieSessionFactory
-from tools import get_session_user, set_session_user, delete_session_user
+from tools import get_session_user, set_session_user, delete_session, get_session_token, set_session_token
 
 # Get credentials from config
 credentials = Credentials()
@@ -118,7 +119,7 @@ def login(request):
 
 def logout(request):
     # Rewrite cookie
-    delete_session_user (request)
+    delete_session (request)
     
     # Go to login page
     return HTTPFound(location="/login")
@@ -134,6 +135,71 @@ def successful(request):
         "message": "",
         "user": user,
     }
+    return context
+
+def reset_password(request):
+    
+    user = get_session_user(request)
+    
+    context = {
+        "current_page": "email-done",
+        "error": "",
+        "message": "",
+        "user": user,
+    }
+    
+    if request.method == 'POST':
+        # Submit recovery email
+        email = request.params["email"]
+        supabase.auth.api.reset_password_for_email (email=email)
+        
+        # Show confirmation message
+        context["message"] = "Email send. Check your inbox to reset your password"
+        
+    
+    return context
+
+def new_password(request):
+    
+    user = get_session_user(request)
+    token = get_session_token(request)
+    
+    context = {
+        "current_page": "email-done",
+        "error": "",
+        "message": "",
+        "user": user,
+    }
+    
+    if "token" in request.params:
+        # Save user to reset password in session
+        set_session_token (request, request.params["token"])
+    elif "password" in request.params and token:
+        
+        # Update password with supabase api
+        headers = {
+            "apikey": secret,
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "password": request.params["password"],
+        }
+        res = requests.put ('https://bdfaikeculjxglpvxvic.supabase.co/auth/v1/user', headers=headers, json=data)
+ 
+        # Confirmation or error message
+        if res.status_code == 200:
+            context["message"] = "Password updated."
+        else: 
+            context["message"] = "Somethins was wrong, try again later"
+            
+        
+        # Delete user reset
+        delete_session(request)
+    else: 
+        # Redirect to home
+        return HTTPFound(location="/")
+    
     return context
 
 def signup_google(request):
@@ -172,6 +238,8 @@ if __name__ == '__main__':
         config.add_route('signup_google', '/signup/google')
         config.add_route('signup_github', '/signup/github')
         config.add_route('logout', '/logout')
+        config.add_route('reset_password', '/reset-password')
+        config.add_route('new_password', '/new-password')
         
         # views
         config.add_view(home, route_name='home', renderer="home.html")
@@ -181,6 +249,8 @@ if __name__ == '__main__':
         config.add_view(signup_google, route_name='signup_google')
         config.add_view(signup_github, route_name='signup_github')
         config.add_view(logout, route_name='logout')
+        config.add_view(reset_password, route_name='reset_password', renderer="reset_password.html")
+        config.add_view(new_password, route_name='new_password', renderer="new_password.html")
         
         # Setup wsgi
         app = config.make_wsgi_app()

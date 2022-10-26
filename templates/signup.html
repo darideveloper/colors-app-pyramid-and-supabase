@@ -18,6 +18,7 @@
             <input type="password" class="form-control" id="password2" onkeyup="update_password()" minlength="8" required>
         </div>
         <p class='text-danger' id="pass-error"></p>
+        <p class="mt-3">Do you already have an account? login <a href="/login">here</a></p>
         <button type="submit" class="btn btn-primary" disabled>Register now</button>
 
         <div class="sign-up-buttons d-flex align-items-center justify-content-start mt-4">
@@ -37,32 +38,6 @@
 
 {% block js %}
 <script>
-    function update_password() {
-
-        // Get elements
-        const pass1_elem = document.querySelector("#password1")
-        const pass2_elem = document.querySelector("#password2")
-        const pass_error = document.querySelector("#pass-error")
-        const submit = document.querySelector("button[type='submit']")
-
-        // Get passwords
-        const pass1 = pass1_elem.value
-        const pass2 = pass2_elem.value
-
-        // Validate passwords
-        if (pass1 && pass2) {
-            if (pass1 == pass2) {
-                pass_error.innerHTML = ""
-
-                // Activate submit button
-                submit.disabled = false
-            } else {
-                pass_error.innerHTML = "The passwords don't match"
-
-                // Disable submit button
-                submit.disabled = true
-            }
-        }
-    }
+    
 </script>
 {% endblock %}
