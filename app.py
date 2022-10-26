@@ -4,7 +4,7 @@ from supabase import create_client as sb_create_client, Client as sb_client
 from config import Config as Credentials
 from pyramid.httpexceptions import HTTPFound
 from pyramid.session import SignedCookieSessionFactory
-from tools import get_session_user, set_session_user
+from tools import get_session_user, set_session_user, delete_session_user
 
 # Get credentials from config
 credentials = Credentials()
@@ -116,6 +116,13 @@ def login(request):
     
     return context
 
+def logout(request):
+    # Rewrite cookie
+    delete_session_user (request)
+    
+    # Go to login page
+    return HTTPFound(location="/login")
+
 def successful(request):
     # Confiroation page after signups
     
@@ -164,6 +171,7 @@ if __name__ == '__main__':
         config.add_route('successful', '/successful')
         config.add_route('signup_google', '/signup/google')
         config.add_route('signup_github', '/signup/github')
+        config.add_route('logout', '/logout')
         
         # views
         config.add_view(home, route_name='home', renderer="home.html")
@@ -172,6 +180,7 @@ if __name__ == '__main__':
         config.add_view(successful, route_name='successful', renderer="successful.html")
         config.add_view(signup_google, route_name='signup_google')
         config.add_view(signup_github, route_name='signup_github')
+        config.add_view(logout, route_name='logout')
         
         # Setup wsgi
         app = config.make_wsgi_app()

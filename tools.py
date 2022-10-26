@@ -13,3 +13,9 @@ def set_session_user (request, email:str):
     # set cookies for user logged
     session = request.session
     session["email"] = email
+    
+def delete_session_user (request): 
+    
+    # delete cookies for user logged
+    session = request.session
+    session.invalidate()
