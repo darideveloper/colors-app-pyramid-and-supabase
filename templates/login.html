@@ -3,19 +3,19 @@
 {% block content %}
 <section class="w-100 d-flex align-items-center justify-content-space row">
     <img class="col-12 col-lg-6" src="https://i.imgur.com/LHpvl5M.png" alt="sign up illustration">
-    <form class="col-12 col-lg-6" action="/signup" method="post">
+    <form class="col-12 col-lg-6" action="/login" method="post">
         <h1>Login</h1>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" minlength="8">
-            <p>Did you forget your password?, click <a href="/reset-password">here</a></p>
+            <p>Did you forget your password?, click <a href="/reset-password" required>here</a></p>
         </div>
         <p class='text-danger' id="pass-error"></p>
-        <button type="submit" class="btn btn-primary" disabled>Login now</button>
+        <button type="submit" class="btn btn-primary">Login now</button>
 
         <div class="sign-up-buttons d-flex align-items-center justify-content-start mt-4">
             <p class="fs-6 m-0">Login with:</p>

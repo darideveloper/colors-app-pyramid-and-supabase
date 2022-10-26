@@ -6,16 +6,16 @@
         <h1>Sign Up</h1>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" required>
         </div>
         <div class="mb-3">
             <label for="password1" class="form-label">Password</label>
             <input type="password" class="form-control" id="password1" name="password" onkeyup="update_password()"
-                minlength="8">
+                minlength="8" required>
         </div>
         <div class="mb-3">
             <label for="password2" class="form-label">Password (again)</label>
-            <input type="password" class="form-control" id="password2" onkeyup="update_password()" minlength="8">
+            <input type="password" class="form-control" id="password2" onkeyup="update_password()" minlength="8" required>
         </div>
         <p class='text-danger' id="pass-error"></p>
         <button type="submit" class="btn btn-primary" disabled>Register now</button>

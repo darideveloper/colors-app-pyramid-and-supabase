@@ -45,8 +45,8 @@ def signup(request):
         "user": user,
     }
     
-    # Get form data in post
     if request.method == 'POST':
+        # Get form data in post
         email = request.params["email"]
         password = request.params["password"]
         
@@ -77,6 +77,29 @@ def login(request):
         "message": "",
         "user": user,
     }
+    
+    if request.method == 'POST':
+        # Get form data in post
+        email = request.params["email"]
+        password = request.params["password"]
+        
+        # Try to login with credentials
+        user = None
+        try:
+            response = supabase.auth.sign_in (email=email, password=password)
+        except:
+            pass
+        else:
+            user = response.user
+        print (user)
+            
+        if user:
+            # Redirect to home
+            return HTTPFound(location="/") 
+        else: 
+            # Show login error
+            context["error"] = "Invalid user or password"
+    
     return context
 
 def successful(request):
