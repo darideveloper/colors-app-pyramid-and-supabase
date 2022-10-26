@@ -4,7 +4,7 @@ from supabase import create_client as sb_create_client, Client as sb_client
 from config import Config as Credentials
 from pyramid.httpexceptions import HTTPFound
 from pyramid.session import SignedCookieSessionFactory
-from tools import get_session_user
+from tools import get_session_user, set_session_user
 
 # Get credentials from config
 credentials = Credentials()
@@ -67,7 +67,7 @@ def signup(request):
     return context
 
 def login(request):
-    # Login page with email, google and discord
+    # Login page with email, google and discord    
     
     user = get_session_user(request)
      
@@ -79,26 +79,40 @@ def login(request):
     }
     
     if request.method == 'POST':
-        # Get form data in post
-        email = request.params["email"]
-        password = request.params["password"]
         
-        # Try to login with credentials
-        user = None
-        try:
-            response = supabase.auth.sign_in (email=email, password=password)
-        except:
-            pass
-        else:
-            user = response.user
-        print (user)
+        # Check for email token
+        valid_login = False
+        if "token_email" in request.params:
+            # Save user in session
+            set_session_user (request, request.params["token_email"])
             
-        if user:
-            # Redirect to home
-            return HTTPFound(location="/") 
-        else: 
-            # Show login error
-            context["error"] = "Invalid user or password"
+            valid_login = True
+        else:
+                    
+            # Get form data in post
+            email = request.params["email"]
+            password = request.params["password"]
+            
+            # Try to login with credentials
+            user = None
+            try:
+                response = supabase.auth.sign_in (email=email, password=password)
+            except:
+                pass
+            else:
+                # Save user in session
+                user = response.user.email
+                set_session_user (request, user)
+                
+            if user:
+                valid_login = True
+            else: 
+                # Show login error
+                context["error"] = "Invalid user or password"
+                
+        # Redirect to home if login is valid
+        if valid_login:
+            return HTTPFound(location="/")
     
     return context
 

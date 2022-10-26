@@ -6,4 +6,10 @@ def get_session_user (request):
     if "email" in session:
         user = session["email"] 
         
-    return user  
+    return user
+
+def set_session_user (request, email:str):
+    
+    # set cookies for user logged
+    session = request.session
+    session["email"] = email
