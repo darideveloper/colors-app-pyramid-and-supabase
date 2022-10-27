@@ -190,7 +190,7 @@ def new_password(request):
         data = {
             "password": request.params["password"],
         }
-        res = requests.put ('https://bdfaikeculjxglpvxvic.supabase.co/auth/v1/user', headers=headers, json=data)
+        res = requests.put (f'{project_url}/auth/v1/user', headers=headers, json=data)
  
         # Confirmation or error message
         if res.status_code == 200:
