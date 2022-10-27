@@ -1,7 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>home</h1>
+<h1>Colors</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">User</th>
+            <th scope="col">Color</th>
+       </tr>
+    </thead>
+    <tbody>
+        {% for color in colors %}
+        <tr>
+            {% if color["email"] == user %}
+                <td class="fw-bold"><a href="/profile">{{color["email"]}} (you)</a></td>
+            {% else %}
+                <td>{{color["email"]}}</td>
+            {% endif %}
+            <td>
+                <span style="background-color: {{color['color']}};width: 30px;height: 10px;" class="me-2 d-inline-block border border-dark"></span>
+                <span>{{color["color"]}} </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
 
 {% block js %}
@@ -9,9 +33,8 @@
 
     // submit token_user to backend, for save in cookies, if exist
     if (token_user) {
-        create_submit_post_form ("/login")
+        create_submit_post_form("/login")
     }
 
 </script>
 {% endblock %}
-

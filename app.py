@@ -31,6 +31,11 @@ def home(request):
         "message": "",
         "user": user,
     }
+    
+    # Request colors from supabase
+    colors = supabase.from_("colors").select("*").execute()
+    context["colors"] = colors.data
+    
     return context
 
 def signup(request):
