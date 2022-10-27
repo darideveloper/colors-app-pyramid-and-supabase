@@ -9,15 +9,14 @@
             <label for="email" class="form-label">{{user}}</label>
         </div>
         <div class="mb-3">
-            <select class="form-select mb-3" aria-label="Default select example">
+            <select class="form-select mb-3" aria-label="Default select example" name="color">
                 {% for color in colors %}
                     <option value="{{color}}" {% if color == color_user %} selected {% endif %}>{{color}}</option>
                 {% endfor %}
-              </select>
+            </select>
         </div>
-        <input type="hidden" name="color" value="">
         <div style="background-color: {{color_user}};width: 100%;height: 10px;" class="current-color me-2 border border-dark mb-3"></div>
-        <button type="submit" class="btn btn-primary">Saven color</button>
+        <button type="submit" class="btn btn-primary">Save color</button>
     </form>
 </section>
 {% endblock %}

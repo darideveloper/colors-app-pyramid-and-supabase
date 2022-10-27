@@ -244,6 +244,15 @@ def profile(request):
         color_user = data_user.data[0]["color"]
         context["color_user"] = color_user
     
+    if request.method == 'POST':
+        # Get new color and update in supabase
+        color = request.params["color"]
+        supabase.from_("colors").update({"color": color}).eq("email", user).execute()
+        
+        # Redirect to home
+        return HTTPFound(location="/")
+        
+    
     return context
 
 # Setup and start app
