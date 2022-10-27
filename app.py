@@ -57,6 +57,11 @@ def signup(request):
         "user": user,
     }
     
+    # Redirect to home if user is logged
+    if request.method == 'GET':
+        if user:
+            return HTTPFound(location="/")
+    
     if request.method == 'POST':
         # Get form data in post
         email = request.params["email"]
@@ -89,6 +94,11 @@ def login(request):
         "message": "",
         "user": user,
     }
+    
+    # Redirect to home if user is logged
+    if request.method == 'GET':
+        if user:
+            return HTTPFound(location="/")
     
     if request.method == 'POST':
         
@@ -159,6 +169,11 @@ def reset_password(request):
         "user": user,
     }
     
+    # Redirect to home if user is logged
+    if request.method == 'GET':
+        if user:
+            return HTTPFound(location="/")
+    
     if request.method == 'POST':
         # Submit recovery email
         email = request.params["email"]
@@ -216,6 +231,12 @@ def new_password(request):
 def signup_google(request):
     # Redirect to page to wign up with google
     
+    # Redirect to home if user is logged
+    user = get_session_user(request)
+    if request.method == 'GET':
+        if user:
+            return HTTPFound(location="/")
+    
     # Generate sign up page
     signin_link = supabase.auth.sign_in (provider="google")
     
@@ -223,7 +244,13 @@ def signup_google(request):
     return HTTPFound(location=signin_link)
 
 def signup_github(request):
-    # Redirect to page to wign up with google
+    # Redirect to page to wign up with github
+    
+    # Redirect to home if user is logged
+    user = get_session_user(request)
+    if request.method == 'GET':
+        if user:
+            return HTTPFound(location="/")
     
     # Generate sign up page
     signin_link = supabase.auth.sign_in (provider="github")
@@ -243,6 +270,10 @@ def profile(request):
         "user": user,
         "colors": ['black', 'white', 'yellow', 'orange', 'red', 'purple', 'magenta', 'green', 'teal', 'blue']
     }
+    
+    if request.method == 'GET':
+        if not user:
+            return HTTPFound(location="/login")
     
     # Get color of the current user
     if user:
