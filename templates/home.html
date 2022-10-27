@@ -24,8 +24,13 @@
             </td>
         </tr>
         {% endfor %}
+
     </tbody>
 </table>
+{% if not user %}
+    <p>Select your favorite color <a href="/profile">here</a></p>
+{% endif %}
+
 {% endblock %}
 
 {% block js %}

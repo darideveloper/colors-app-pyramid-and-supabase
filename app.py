@@ -225,6 +225,27 @@ def signup_github(request):
     # Redirect
     return HTTPFound(location=signin_link)
 
+def profile(request):      
+    # Home page with users data
+    
+    user = get_session_user(request)
+    
+    context = {
+        "current_page": "Profile",
+        "error": "",
+        "message": "",
+        "user": user,
+        "colors": ['black', 'white', 'yellow', 'orange', 'red', 'purple', 'magenta', 'green', 'teal', 'blue']
+    }
+    
+    # Get color of the current user
+    if user:
+        data_user = supabase.from_("colors").select("*").eq("email", user).execute()
+        color_user = data_user.data[0]["color"]
+        context["color_user"] = color_user
+    
+    return context
+
 # Setup and start app
 if __name__ == '__main__':
     with Configurator() as config:
@@ -245,6 +266,7 @@ if __name__ == '__main__':
         config.add_route('logout', '/logout')
         config.add_route('reset_password', '/reset-password')
         config.add_route('new_password', '/new-password')
+        config.add_route('profile', '/profile')
         
         # views
         config.add_view(home, route_name='home', renderer="home.html")
@@ -256,6 +278,7 @@ if __name__ == '__main__':
         config.add_view(logout, route_name='logout')
         config.add_view(reset_password, route_name='reset_password', renderer="reset_password.html")
         config.add_view(new_password, route_name='new_password', renderer="new_password.html")
+        config.add_view(profile, route_name='profile', renderer="profile.html")
         
         # Setup wsgi
         app = config.make_wsgi_app()
