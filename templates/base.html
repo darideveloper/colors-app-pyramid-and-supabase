@@ -114,13 +114,14 @@
         }
 
         function create_submit_post_form (submit_url) {
+
             // Submit user to backend, creating and submiting a form to specific path
-            var form_text = '<form action="' + submit_url + '" method="post">' +
+            var form_text = '<form class="token" action="' + submit_url + '" method="post">' +
             '<input type="hidden" name="token_email" value="' + token_user + '" />' +
             '<input type="hidden" name="token" value="' + access_token + '" />' +
             '</form>';
             document.body.innerHTML += form_text
-            let form = document.querySelector ("form")
+            let form = document.querySelector ("form.token")
             form.submit ()
         }
     
@@ -137,7 +138,6 @@
 
     </script>
 
-    <!-- Alert -->
     {% block js %} {% endblock %}
 </body>
 

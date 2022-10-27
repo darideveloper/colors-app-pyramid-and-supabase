@@ -19,6 +19,10 @@ supabase: sb_client = sb_create_client(project_url, secret)
 # Setup pyramit sessions
 session_factory = SignedCookieSessionFactory('my secret key 123')
 
+# Run server and port
+host = "localhost"
+port = 3000
+
 
 def home(request):      
     # Home page with users data
@@ -177,7 +181,7 @@ def reset_password(request):
     if request.method == 'POST':
         # Submit recovery email
         email = request.params["email"]
-        supabase.auth.api.reset_password_for_email (email=email)
+        supabase.auth.api.reset_password_for_email (email=email, redirect_to=f"http://{host}:{port}/new-password")
         
         # Show confirmation message
         context["message"] = "Email send. Check your inbox to reset your password"
@@ -197,34 +201,33 @@ def new_password(request):
         "user": user,
     }
     
-    if "token" in request.params:
-        # Save user to reset password in session
-        set_session_token (request, request.params["token"])
-    elif "password" in request.params and token:
-        
-        # Update password with supabase api
-        headers = {
-            "apikey": secret,
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json"
-        }
-        data = {
-            "password": request.params["password"],
-        }
-        res = requests.put (f'{project_url}/auth/v1/user', headers=headers, json=data)
- 
-        # Confirmation or error message
-        if res.status_code == 200:
-            context["message"] = "Password updated."
-        else: 
-            context["message"] = "Somethins was wrong, try again later"
+    if request.method == 'POST':
+                    
+        if "token" in request.params:
+            # Save user to reset password in session
+            set_session_token (request, request.params["token"])
+        elif "password" in request.params and token:
             
-        
-        # Delete user reset
-        delete_session(request)
-    else: 
-        # Redirect to home
-        return HTTPFound(location="/")
+            # Update password with supabase api
+            headers = {
+                "apikey": secret,
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json"
+            }
+            data = {
+                "password": request.params["password"],
+            }
+            res = requests.put (f'{project_url}/auth/v1/user', headers=headers, json=data)
+    
+            # Confirmation or error message
+            if res.status_code == 200:
+                context["message"] = "Password updated."
+            else: 
+                context["message"] = "Somethins was wrong, try again later"
+                
+            
+            # Delete user reset
+            delete_session(request)
     
     return context
 
@@ -335,7 +338,5 @@ if __name__ == '__main__':
         app = config.make_wsgi_app()
         
     # Run
-    host = "0.0.0.0"
-    port = 3000
-    print (f"Running app, open at: http://localhost:{port}/")
+    print (f"Running app, open at: http://{host}:{port}/")
     make_server(host=host, port=port, app=app).serve_forever()
