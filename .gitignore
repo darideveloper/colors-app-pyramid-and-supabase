@@ -6,5 +6,4 @@ temp.*
 *.log*
 *.log*
 *.zip
-*.png
 venv
