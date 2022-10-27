@@ -32,6 +32,12 @@ def home(request):
         "user": user,
     }
     
+    data_user = supabase.from_("colors").select("*").eq("email", user).execute().data
+    if data_user:
+        context["user_found"] = data_user[0]["email"]
+    else:
+        context["user_found"] = ""
+    
     # Request colors from supabase
     colors = supabase.from_("colors").select("*").execute()
     context["colors"] = colors.data
@@ -240,14 +246,19 @@ def profile(request):
     
     # Get color of the current user
     if user:
-        data_user = supabase.from_("colors").select("*").eq("email", user).execute()
-        color_user = data_user.data[0]["color"]
-        context["color_user"] = color_user
+        data_user = supabase.from_("colors").select("*").eq("email", user).execute().data
+        if data_user:
+            color_user = data_user[0]["color"]
+            context["color_user"] = color_user
+        else:
+            context["color_user"] = "black"
     
     if request.method == 'POST':
-        # Get new color and update in supabase
+        # Get new color and update or insert in supabase
         color = request.params["color"]
-        supabase.from_("colors").update({"color": color}).eq("email", user).execute()
+        user_updated = supabase.from_("colors").update({"color": color}).eq("email", user).execute().data
+        if not user_updated:
+            supabase.from_("colors").insert ({"email": user, "color": color}).execute()
         
         # Redirect to home
         return HTTPFound(location="/")
