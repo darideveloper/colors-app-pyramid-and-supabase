@@ -1,3 +1,4 @@
+from webbrowser import get
 import requests
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
@@ -5,7 +6,7 @@ from supabase import create_client as sb_create_client, Client as sb_client
 from config import Config as Credentials
 from pyramid.httpexceptions import HTTPFound
 from pyramid.session import SignedCookieSessionFactory
-from tools import get_session_user, set_session_user, delete_session, get_session_token, set_session_token
+from tools import get_session_user, set_session_user, delete_session, get_session_token, set_session_token, get_email_token
 
 # Get credentials from config
 credentials = Credentials()
@@ -26,7 +27,7 @@ port = 3000
 
 def home(request):      
     # Home page with users data
-    
+        
     user = get_session_user(request)
     
     context = {
@@ -45,7 +46,7 @@ def home(request):
     # Request colors from supabase
     colors = supabase.from_("colors").select("*").execute()
     context["colors"] = colors.data
-    
+        
     return context
 
 def signup(request):
@@ -162,6 +163,18 @@ def successful(request):
     }
     return context
 
+def successful_token (request):
+    
+    # Get token after user login with google ot github
+    token = request.matchdict.get ("token")
+    
+    # Get email token and save as a cookie
+    email_token = get_email_token (token)
+    set_session_user (request, email_token)
+    
+    return HTTPFound(location="/")
+
+
 def reset_password(request):
     
     user = get_session_user(request)
@@ -202,11 +215,11 @@ def new_password(request):
     }
     
     if request.method == 'POST':
+        
+        # Get token from session
+        token = get_session_token(request)
                     
-        if "token" in request.params:
-            # Save user to reset password in session
-            set_session_token (request, request.params["token"])
-        elif "password" in request.params and token:
+        if "password" in request.params and token:
             
             # Update password with supabase api
             headers = {
@@ -223,13 +236,24 @@ def new_password(request):
             if res.status_code == 200:
                 context["message"] = "Password updated."
             else: 
-                context["message"] = "Somethins was wrong, try again later"
+                context["error"] = "Something was wrong, try again later"
                 
             
             # Delete user reset
             delete_session(request)
     
     return context
+
+def new_password_token (request):
+    
+    # Get token for password recovery
+    token = request.matchdict.get ("token")
+    
+    # Save token in session
+    set_session_token (request, f"token={token}")
+    
+    return HTTPFound(location="/new-password")
+
 
 def signup_google(request):
     # Redirect to page to wign up with google
@@ -315,11 +339,13 @@ if __name__ == '__main__':
         config.add_route('signup', '/signup')
         config.add_route('login', '/login')
         config.add_route('successful', '/successful')
+        config.add_route('successful_token', '/successful/{token}')
         config.add_route('signup_google', '/signup/google')
         config.add_route('signup_github', '/signup/github')
         config.add_route('logout', '/logout')
         config.add_route('reset_password', '/reset-password')
         config.add_route('new_password', '/new-password')
+        config.add_route('new_password_token', '/new-password/{token}')
         config.add_route('profile', '/profile')
         
         # views
@@ -327,11 +353,13 @@ if __name__ == '__main__':
         config.add_view(signup, route_name='signup', renderer="signup.html")
         config.add_view(login, route_name='login', renderer="login.html")
         config.add_view(successful, route_name='successful', renderer="successful.html")
+        config.add_view(successful_token, route_name='successful_token', renderer="successful.html")
         config.add_view(signup_google, route_name='signup_google')
         config.add_view(signup_github, route_name='signup_github')
         config.add_view(logout, route_name='logout')
         config.add_view(reset_password, route_name='reset_password', renderer="reset_password.html")
         config.add_view(new_password, route_name='new_password', renderer="new_password.html")
+        config.add_view(new_password_token, route_name='new_password_token', renderer="new_password.html")
         config.add_view(profile, route_name='profile', renderer="profile.html")
         
         # Setup wsgi

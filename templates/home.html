@@ -36,10 +36,7 @@
 {% block js %}
 <script>
 
-    // submit token_user to backend, for save in cookies, if exist
-    if (token_user) {
-        create_submit_post_form("/login")
-    }
+    send_token ("successful")
 
 </script>
 {% endblock %}

@@ -1,3 +1,5 @@
+import jwt
+
 def get_session_user (request):
     
     # read cookies for check if user is logged
@@ -23,12 +25,12 @@ def delete_session (request):
 def get_session_token (request):
     
     # read cookies for check if user is logged
-    user = ""
+    token = ""
     session = request.session
     if "token" in session:
-        user = session["token"] 
+        token = session["token"] 
         
-    return user
+    return token
 
 def set_session_token (request, token:str):
     
@@ -40,4 +42,13 @@ def set_session_token (request, token:str):
     # set cookies for user logged
     session = request.session
     session["token"] = token
-    
+
+def get_email_token (token):
+    # get email from json web token
+
+    decoded = jwt.decode(
+        token,
+        algorithms=['HS256'],
+        options={'verify_signature': False,}
+    )
+    return (decoded["email"])

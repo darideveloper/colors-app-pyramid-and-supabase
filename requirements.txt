@@ -2,3 +2,5 @@ supabase==0.7.1
 pyramid==2.0
 pyramid-jinja2==2.10
 requests==2.28.1
+pyjwt[crypto]
+ipython
