@@ -33,7 +33,7 @@
 <h3 align="center">Colors App</h3>
 
   <p align="center">
-    App with the Flask, Supabase service and vanilla js in the frontend.
+    App with the Pyramid, Supabase service and vanilla js in the frontend.
     <br />
     <br />
     <a href="#">View Demo (coming soon)</a>
@@ -77,8 +77,8 @@ Insede the app, in the home page, its showed a table with each favorite color of
 
 ### Built With
 
-<a href="https://flask.palletsprojects.com/en/2.2.x/">
-  <img src="https://cdn.svgporn.com/logos/flask.svg" width="50" alt="flask" title="flask">
+<a href="https://Pyramid.palletsprojects.com/en/2.2.x/">
+  <img src="./imgs/pyramid.png" width="50" alt="Pyramid" title="Pyramid">
 </a>
 <a href="https://developer.mozilla.org/es/docs/Web/javascript">
   <img src="https://cdn.svgporn.com/logos/javascript.svg" width="50" alt="javascript" title="javascript">
