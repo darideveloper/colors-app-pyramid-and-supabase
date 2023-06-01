@@ -47,15 +47,15 @@ A web app with a full user management system, who allow to login, sign up, backu
 
 # Roadmap
 
-- [x] Sign & Login\r
-  - [x] Email and password\r
-    - [x] Email confirmation \r
-  - [x] Google\r
-  - [x] Github\r
-  - [x] Discord\r
-- [x] Password recovery\r
-- [x] Home page with colors table\r
-- [x] Profile with Favorite color update\r
+- [x] Sign & Login
+  - [x] Email and password
+    - [x] Email confirmation 
+  - [x] Google
+  - [x] Github
+  - [x] Discord
+- [x] Password recovery
+- [x] Home page with colors table
+- [x] Profile with Favorite color update
 - [ ] Deploy in AWS
 
 
