@@ -1,5 +1,5 @@
-<div><a href='https://github.com/github.com/darideveloper/blob/master/LICENSE' target='_blank'>
-            <img src='https://img.shields.io/github/license/github.com/darideveloper.svg?style=for-the-badge' alt='MIT License' height='30px'/>
+<div><a href='https://github.com/darideveloper/colors-app-pyramid-and-supabase/blob/master/LICENSE' target='_blank'>
+            <img src='https://img.shields.io/github/license/darideveloper/colors-app-pyramid-and-supabase.svg?style=for-the-badge' alt='MIT License' height='30px'/>
         </a><a href='https://www.linkedin.com/in/francisco-dari-hernandez-6456b6181/' target='_blank'>
                 <img src='https://img.shields.io/static/v1?style=for-the-badge&message=LinkedIn&color=0A66C2&logo=LinkedIn&logoColor=FFFFFF&label=' alt='Linkedin' height='30px'/>
             </a><a href='https://t.me/darideveloper' target='_blank'>
@@ -18,11 +18,7 @@
 
 App with the Flask, Supabase service and vanilla js in the frontend.
 
-Start date: **2023-05-10**
-
-Last update: **2023-05-10**
-
-Project type: **personal's project**
+Project type: **personal**
 
 </div><br><details>
             <summary>Table of Contents</summary>
@@ -57,5 +53,4 @@ A web app with a full user management system, who allow to login, sign up, backu
 - [x] Home page with colors table
 - [x] Profile with Favorite color update
 - [ ] Deploy in AWS
-
 
